@@ -1,4 +1,8 @@
-export async function fetchCars() {
+import { CarProps, FilterProps } from "@/types";
+
+export async function fetchCars(filters: FilterProps) {
+    const { manufacturer, year, model, limit, fuel } = filters;
+
     if(!process.env.RAPID_API_KEY) {
         throw new Error("API key is not set in environment variable");
     }
@@ -8,7 +12,7 @@ export async function fetchCars() {
         'X-RapidAPI-Host': 'cars-by-api-ninjas.p.rapidapi.com'
     }
 
-    const response = await fetch('https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=corolla', {
+    const response = await fetch(`https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacturer}&year=${year}&model=${model}&limit=${limit}&fuel_type=${fuel}`, {
         headers: headers,
     });
 
@@ -16,7 +20,6 @@ export async function fetchCars() {
 
     return result;
 }
-
 
 export const calculateCarRent = (city_mpg: number, year: number) => {
     const basePricePerDay = 50; // Base rental price per day in dollars
@@ -32,3 +35,33 @@ export const calculateCarRent = (city_mpg: number, year: number) => {
   
     return rentalRatePerDay.toFixed(0);
   };
+
+  export const generateCarImageUrl = (car: CarProps, angle?: string) => {
+
+    if(!process.env.NEXT_PUBLIC_IMAGIN_KEY) {
+        throw new Error("Imagin API key not set");
+    }
+
+    const url = new URL('https://cdn.imagin.studio/getimage')
+
+    const { make, year, model } = car;
+    
+    url.searchParams.append('customer', process.env.NEXT_PUBLIC_IMAGIN_KEY);
+    url.searchParams.append('make', make);
+    url.searchParams.append('modelFamily', model.split(' ')[0]);
+    url.searchParams.append('zoomType', 'fullscreen');
+    url.searchParams.append('modelYear', `${year}`);
+    url.searchParams.append('angle', `${angle}`);
+
+    return `${url}`;
+  }
+
+export const updateSearchParams = (type: string, value: string) => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    searchParams.set(type, value)
+
+    const newPathname = `${window.location.pathname}?${searchParams.toString()}`
+
+    return newPathname;
+}

@@ -42,8 +42,8 @@ npm install
 Create a `.env` file in the root directory and add the necessary API keys and database connection strings:
 
 ```env
-DATABASE_URL=your_database_url
-API_KEY=your_api_key
+RAPID_API_KEY=your_rapidapi_key
+NEXT_PUBLIC_IMAGIN_KEY=your_imagin_key
 ```
 
 ### Running the Project

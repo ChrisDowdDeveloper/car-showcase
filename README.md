@@ -1,6 +1,6 @@
 # CarHub
 
-Welcome to the CarHub GitHub repository! This is the source code for a comprehensive car display platform that I built as part of a coding project. You can follow along with the tutorial on my YouTube channel to understand how this project was put together step-by-step.
+CarHub is a Next.js application that leverages Imagin Studios car API and Cars by API_Ninja on RapidAPI to showcase different cars from all types of makes and models. 
 
 ## Features
 
